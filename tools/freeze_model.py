@@ -183,11 +183,11 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Freeze old model")
     parser.add_argument(
         "--checkpoint_in",
-        default="resources/networks/mars-small128.ckpt-68577",
+        default="E:/OBJECT_DECTECT/yolo3/YOLOv3_TensorFlow/checkpoint/VOC2012/VOC2012best_model_Epoch_34_step_6019_mAP_0.5873_loss_9.0562_lr_3e-05",
         help="Path to checkpoint file")
     parser.add_argument(
         "--graphdef_out",
-        default="resources/networks/mars-small128.pb")
+        default="E:/OBJECT_DECTECT/yolo3/YOLOv3_TensorFlow/checkpoint/VOC2012/VOC2012best_model_Epoch_34_step_6019_mAP_0.5873_loss_9.0562_lr_3e-05.pb")
     return parser.parse_args()
 
 

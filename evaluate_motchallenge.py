@@ -9,14 +9,12 @@ def parse_args():
     """
     parser = argparse.ArgumentParser(description="MOTChallenge evaluation")
     parser.add_argument(
-        "--mot_dir", help="Path to MOTChallenge directory (train or test)",
-        required=True)
+        "--mot_dir", help="Path to MOTChallenge directory (train or test)",default="E:/OBJECT_DECTECT/MOT16/train")
     parser.add_argument(
-        "--detection_dir", help="Path to detections.", default="detections",
-        required=True)
+        "--detection_dir", help="Path to detections.",default="E:/OBJECT_DECTECT/deep_sort/train0")
     parser.add_argument(
         "--output_dir", help="Folder in which the results will be stored. Will "
-        "be created if it does not exist.", default="results")
+        "be created if it does not exist.", default="results/mydata1")
     parser.add_argument(
         "--min_confidence", help="Detection confidence threshold. Disregard "
         "all detections that have a confidence lower than this value.",

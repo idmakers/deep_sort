@@ -17,14 +17,14 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Siamese Tracking")
     parser.add_argument(
         "--mot_dir", help="Path to MOTChallenge directory (train or test)",
-        required=True)
+        default="E:/OBJECT_DECTECT/MOT16/train/")
     parser.add_argument(
         "--result_dir", help="Path to the folder with tracking output.",
-        required=True)
+        default="E:/OBJECT_DECTECT/deep_sort/txt/")
     parser.add_argument(
         "--output_dir", help="Folder to store the videos in. Will be created "
         "if it does not exist.",
-        required=True)
+        default="video")
     parser.add_argument(
         "--convert_h264", help="If true, convert videos to libx264 (requires "
         "FFMPEG", default=False)

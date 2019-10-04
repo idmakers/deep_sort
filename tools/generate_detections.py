@@ -2,6 +2,7 @@
 import os
 import errno
 import argparse
+import time
 import numpy as np
 import cv2
 import tensorflow as tf
@@ -157,6 +158,7 @@ def generate_detections(encoder, mot_dir, output_dir, detection_dir=None):
         detection_file = os.path.join(
             detection_dir, sequence, "det/det.txt")
         detections_in = np.loadtxt(detection_file, delimiter=',')
+        #print(detections_in)
         detections_out = []
 
         frame_indices = detections_in[:, 0].astype(np.int)
@@ -166,13 +168,14 @@ def generate_detections(encoder, mot_dir, output_dir, detection_dir=None):
             print("Frame %05d/%05d" % (frame_idx, max_frame_idx))
             mask = frame_indices == frame_idx
             rows = detections_in[mask]
-
+            
             if frame_idx not in image_filenames:
                 print("WARNING could not find image for frame %d" % frame_idx)
                 continue
             bgr_image = cv2.imread(
                 image_filenames[frame_idx], cv2.IMREAD_COLOR)
             features = encoder(bgr_image, rows[:, 2:6].copy())
+           # print(features)
             detections_out += [np.r_[(row, feature)] for row, feature
                                in zip(rows, features)]
 
@@ -187,18 +190,18 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Re-ID feature extractor")
     parser.add_argument(
         "--model",
-        default="resources/networks/mars-small128.pb",
+        default="resources/network/mars-small128.pb",
         help="Path to freezed inference graph protobuf.")
     parser.add_argument(
         "--mot_dir", help="Path to MOTChallenge directory (train or test)",
-        required=True)
+        default="E:/OBJECT_DECTECT/MOT16/train")
     parser.add_argument(
         "--detection_dir", help="Path to custom detections. Defaults to "
         "standard MOT detections Directory structure should be the default "
         "MOTChallenge structure: [sequence]/det/det.txt", default=None)
     parser.add_argument(
         "--output_dir", help="Output directory. Will be created if it does not"
-        " exist.", default="detections")
+        " exist.", default="train0")
     return parser.parse_args()
 
 

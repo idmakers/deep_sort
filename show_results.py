@@ -86,10 +86,10 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Siamese Tracking")
     parser.add_argument(
         "--sequence_dir", help="Path to the MOTChallenge sequence directory.",
-        default=None, required=True)
+        default="E:/OBJECT_DECTECT/MOT16/train/MOT16-02")
     parser.add_argument(
         "--result_file", help="Tracking output in MOTChallenge file format.",
-        default=None, required=True)
+        default="E:/OBJECT_DECTECT/deep_sort/txt/GT.txt")
     parser.add_argument(
         "--detection_file", help="Path to custom detections (optional).",
         default=None)
