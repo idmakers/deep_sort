@@ -74,6 +74,7 @@ def run(sequence_dir, result_file, show_false_alarms=False, detection_file=None,
         update_ms = seq_info["update_ms"]
     if update_ms is None:
         update_ms = DEFAULT_UPDATE_MS
+
     visualizer = visualization.Visualization(seq_info, update_ms)
     if video_filename is not None:
         visualizer.viewer.enable_videowriter(video_filename)
@@ -86,10 +87,10 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Siamese Tracking")
     parser.add_argument(
         "--sequence_dir", help="Path to the MOTChallenge sequence directory.",
-        default="E:/OBJECT_DECTECT/MOT16/train/MOT16-02")
+        default="E:/OBJECT_DECTECT/MOT16/train/MOT16-04")
     parser.add_argument(
         "--result_file", help="Tracking output in MOTChallenge file format.",
-        default="E:/OBJECT_DECTECT/deep_sort/txt/GT.txt")
+        default="E:/OBJECT_DECTECT/MOT16/train/MOT16-04/gt/gt.txt")
     parser.add_argument(
         "--detection_file", help="Path to custom detections (optional).",
         default=None)
@@ -99,7 +100,7 @@ def parse_args():
         default=None)
     parser.add_argument(
         "--output_file", help="Filename of the (optional) output video.",
-        default=None)
+        default="./gt04.mp4")
     parser.add_argument(
         "--show_false_alarms", help="Show false alarms as red bounding boxes.",
         type=bool, default=False)

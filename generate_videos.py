@@ -2,7 +2,7 @@
 import os
 import argparse
 import show_results
-
+import sys
 
 def convert(filename_in, filename_out, ffmpeg_executable="ffmpeg"):
     import subprocess
@@ -17,10 +17,10 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Siamese Tracking")
     parser.add_argument(
         "--mot_dir", help="Path to MOTChallenge directory (train or test)",
-        default="E:/OBJECT_DECTECT/MOT16/train/")
+        default="E:/OBJECT_DECTECT/MOT17/train/")
     parser.add_argument(
         "--result_dir", help="Path to the folder with tracking output.",
-        default="E:/OBJECT_DECTECT/deep_sort/txt/")
+        default="E:/OBJECT_DECTECT/deep_sort/results/MOT17")
     parser.add_argument(
         "--output_dir", help="Folder to store the videos in. Will be created "
         "if it does not exist.",
@@ -53,13 +53,14 @@ if __name__ == "__main__":
             sequence_dir, result_file, False, None, update_ms, video_filename)
 
     if not args.convert_h264:
-        import sys
-        sys.exit()
-    for sequence_txt in os.listdir(args.result_dir):
-        sequence = os.path.splitext(sequence_txt)[0]
-        sequence_dir = os.path.join(args.mot_dir, sequence)
-        if not os.path.exists(sequence_dir):
-            continue
-        filename_in = os.path.join(args.output_dir, "%s.avi" % sequence)
-        filename_out = os.path.join(args.output_dir, "%s.mp4" % sequence)
-        convert(filename_in, filename_out)
+        sys.exit(0)
+        
+    else :
+        for sequence_txt in os.listdir(args.result_dir):
+            sequence = os.path.splitext(sequence_txt)[0]
+            sequence_dir = os.path.join(args.mot_dir, sequence)
+            if not os.path.exists(sequence_dir):
+                continue
+            filename_in = os.path.join(args.output_dir, "%s.avi" % sequence)
+            filename_out = os.path.join(args.output_dir, "%s.mp4" % sequence)
+            convert(filename_in, filename_out)

@@ -7,7 +7,41 @@ import numpy as np
 import cv2
 import tensorflow as tf
 
+count = 0
+count1 = 0
+dir =""
 
+def savedata (data,name):
+    with open(name, 'w') as outfile:
+    # I'm writing a header here just for the sake of readability
+    # Any line starting with "#" will be ignored by numpy.loadtxt
+        outfile.write('# Array shape: {0}\n'.format(data.shape))
+
+        # Iterating through a ndimensional array produces slices along
+        # the last axis. This is equivalent to data[i,:,:] in this case
+        for data_slice in data:
+
+            # The formatting string indicates that I'm writing out
+            # the values in left-justified columns 7 characters in width
+            # with 2 decimal places.  
+            np.savetxt(outfile, data_slice, fmt='%3d')
+
+        # Writing out a break to indicate different slices...
+            outfile.write('# New slice\n')
+
+def checkfolder (floder):
+    global dir
+    if os.path.exists(floder):
+        dir = floder
+        return
+    else :
+        os.mkdir(floder)
+        dir = floder
+def add ():
+    global count
+    global count1
+    count +=1
+    count1 +=1
 def _run_in_batches(f, data_dict, out, batch_size):
     data_len = len(out)
     num_batches = int(data_len / batch_size)
@@ -64,8 +98,11 @@ def extract_image_patch(image, bbox, patch_shape):
     if np.any(bbox[:2] >= bbox[2:]):
         return None
     sx, sy, ex, ey = bbox
+    add()
     image = image[sy:ey, sx:ex]
     image = cv2.resize(image, tuple(patch_shape[::-1]))
+    text = str(count)
+   # cv2.imwrite(dir+"/"+text+".jpg",image)
     return image
 
 
@@ -110,8 +147,10 @@ def create_box_encoder(model_filename, input_name="images",
                 print("WARNING: Failed to extract image patch: %s." % str(box))
                 patch = np.random.uniform(
                     0., 255., image_shape).astype(np.uint8)
+            savedata(patch,"E:/OBJECT_DECTECT/deep_sort/feature/"+str(count1)+".txt")
             image_patches.append(patch)
         image_patches = np.asarray(image_patches)
+        
         return image_encoder(image_patches, batch_size)
 
     return encoder
@@ -148,10 +187,12 @@ def generate_detections(encoder, mot_dir, output_dir, detection_dir=None):
                 "Failed to created output directory '%s'" % output_dir)
 
     for sequence in os.listdir(mot_dir):
+        global count
+          
         print("Processing %s" % sequence)
         sequence_dir = os.path.join(mot_dir, sequence)
-
         image_dir = os.path.join(sequence_dir, "img1")
+        #checkfolder("E:/OBJECT_DECTECT/deep_sort/img/extract/"+sequence_dir[29:])
         image_filenames = {
             int(os.path.splitext(f)[0]): os.path.join(image_dir, f)
             for f in os.listdir(image_dir)}
@@ -166,23 +207,26 @@ def generate_detections(encoder, mot_dir, output_dir, detection_dir=None):
         min_frame_idx = frame_indices.astype(np.int).min()
         max_frame_idx = frame_indices.astype(np.int).max()
         for frame_idx in range(min_frame_idx, max_frame_idx + 1):
+            count = 0
+            #checkfolder("E:/OBJECT_DECTECT/deep_sort/img/extract/"+sequence_dir[29:]+"/"+str(frame_idx))
             print("Frame %05d/%05d" % (frame_idx, max_frame_idx))
             mask = frame_indices == frame_idx
             rows = detections_in[mask]
-            
             if frame_idx not in image_filenames:
                 print("WARNING could not find image for frame %d" % frame_idx)
                 continue
             bgr_image = cv2.imread(
                 image_filenames[frame_idx], cv2.IMREAD_COLOR)
+            
+            #cv2.imwrite("./img/ori/"+".jpg",bgr_image)
             features = encoder(bgr_image, rows[:, 2:6].copy())
            # print(features)
             detections_out += [np.r_[(row, feature)] for row, feature
                                in zip(rows, features)]
-
-        output_filename = os.path.join(output_dir, "%s.npy" % sequence)
-        np.save(
-            output_filename, np.asarray(detections_out), allow_pickle=False)
+        
+        #output_filename = os.path.join(output_dir, "%s.npy" % sequence)
+        #np.save(
+         #   output_filename, np.asarray(detections_out), allow_pickle=False)
 
 
 def parse_args():
@@ -195,14 +239,14 @@ def parse_args():
         help="Path to freezed inference graph protobuf.")
     parser.add_argument(
         "--mot_dir", help="Path to MOTChallenge directory (train or test)",
-        default="E:/OBJECT_DECTECT/MOT16/test0")
+        default="E:/OBJECT_DECTECT/MOT17/train")
     parser.add_argument(
         "--detection_dir", help="Path to custom detections. Defaults to "
         "standard MOT detections Directory structure should be the default "
         "MOTChallenge structure: [sequence]/det/det.txt", default=None)
     parser.add_argument(
         "--output_dir", help="Output directory. Will be created if it does not"
-        " exist.", default="MOT16-YOLO")
+        " exist.", default="MOT17-0000")
     return parser.parse_args()
 
 
