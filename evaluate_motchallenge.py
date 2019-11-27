@@ -9,12 +9,12 @@ def parse_args():
     """
     parser = argparse.ArgumentParser(description="MOTChallenge evaluation")
     parser.add_argument(
-        "--mot_dir", help="Path to MOTChallenge directory (train or test)",default="E:/OBJECT_DECTECT/MOT17/train")
+        "--mot_dir", help="Path to MOTChallenge directory (train or test)",default="E:/OBJECT_DECTECT/MOT16/train")
     parser.add_argument(
-        "--detection_dir", help="Path to detections.",default="E:/OBJECT_DECTECT/deep_sort/MOT17")
+        "--detection_dir", help="Path to detections.",default="E:/OBJECT_DECTECT/deep_sort/MOT16")
     parser.add_argument(
         "--output_dir", help="Folder in which the results will be stored. Will "
-        "be created if it does not exist.", default="results/MOT17-001")
+        "be created if it does not exist.", default="results/MOT16")
     parser.add_argument(
         "--min_confidence", help="Detection confidence threshold. Disregard "
         "all detections that have a confidence lower than this value.",
@@ -58,19 +58,19 @@ if __name__ == "__main__":
      
         end = time()
         
-        if sequence[0:8] == 'MOT17-02':
+        if sequence[0:8] == 'MOT16-02':
             num_frames = 600
-        elif sequence[0:8] == 'MOT17-04':
+        elif sequence[0:8] == 'MOT16-04':
              num_frames = 1050
-        elif sequence[0:8] == 'MOT17-05':
+        elif sequence[0:8] == 'MOT16-05':
              num_frames = 837
-        elif sequence[0:8] == 'MOT17-10':
+        elif sequence[0:8] == 'MOT16-10':
              num_frames = 654
-        elif sequence[0:8] == 'MOT17-11':
+        elif sequence[0:8] == 'MOT16-11':
              num_frame = 900
-        elif sequence[0:8] == 'MOT17-13':
+        elif sequence[0:8] == 'MOT16-13':
               num_frames = 750
-        elif sequence[0:8] == 'MOT17-13':
+        elif sequence[0:8] == 'MOT16-09':
               num_frames = 525
         time_run ="finished " + sequence + " at " + str(int(num_frames / (end - start))) + " fps!"
         print(time_run,file=f)

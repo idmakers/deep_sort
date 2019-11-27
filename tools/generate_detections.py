@@ -195,14 +195,14 @@ def parse_args():
         help="Path to freezed inference graph protobuf.")
     parser.add_argument(
         "--mot_dir", help="Path to MOTChallenge directory (train or test)",
-        default="E:/OBJECT_DECTECT/MOT16/test0")
+        default="E:/OBJECT_DECTECT/MOT16/train")
     parser.add_argument(
         "--detection_dir", help="Path to custom detections. Defaults to "
         "standard MOT detections Directory structure should be the default "
         "MOTChallenge structure: [sequence]/det/det.txt", default=None)
     parser.add_argument(
         "--output_dir", help="Output directory. Will be created if it does not"
-        " exist.", default="MOT16-YOLO")
+        " exist.", default="MOT16")
     return parser.parse_args()
 
 
