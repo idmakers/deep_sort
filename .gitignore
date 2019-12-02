@@ -90,6 +90,7 @@ ENV/
 *.npy
 *.txt
 *.jpg
+*.mp4
 
 resources/network/mars-small128.ckpt-68577
 resources/network/mars-small128.ckpt-68577.meta
